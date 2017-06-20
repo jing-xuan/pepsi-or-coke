@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+        <script>
+        /**
+            samples = original data for samples
+            responses = original data for responses
+            mappedRes = mapped student's response to sample ID
+            sameC = responses where both fields are Coke
+            sameP = responses where both fields are Pepsi
+            diffC = responses where 1st field is Coke
+            diffP = responses where 1st field is Pepsi
+        **/
+             var app = angular.module('myApp', []);
+              app.controller('itemsCtrl', function($scope, $http) {
+              $http.get("/data").then(function (response) {
+                $scope.data = response.data;
+                $scope.samples = $scope.data[0];
+                $scope.responses = $scope.data[1];
+                $scope.mappedRes = $scope.data[1];
+                $scope.sameP = [];
+                $scope.sameC = [];
+                $scope.diffP = [];
+                $scope.diffC = [];
+                for(i = 0; i<$scope.responses.length; i++){
+                    $scope.mappedRes[i]['drink2'] = $scope.samples[$scope.responses[i]['sampleID']-1][$scope.responses[i]['drink2']];
+                    if($scope.mappedRes[i]['drink1'] == $scope.mappedRes[i]['drink2']){
+                        if($scope.mappedRes[i]['drink1'] == 'Pepsi'){
+                            $scope.sameP.push($scope.mappedRes[i]);
+                        }
+                        else{
+                            $scope.sameC.push($scope.mappedRes[i]);
+                        }
+                    }
+                    else{
+                        if($scope.mappedRes[i]['drink1'] == 'Coke'){
+                            $scope.diffC.push($scope.mappedRes[i]);
+                        }
+                        else{
+                            $scope.diffP.push($scope.mappedRes[i]);
+                        }
+                    }
+                }
+                  });
+              });
+        </script>
+    <title>
+        Students' Responses
+    </title>
+</head>
+<body>
+    <div ng-app="myApp" ng-controller="itemsCtrl">
+        <form>
+              <label for="first">Samples</label>
+              <input id="first" type="radio" name="content" ng-model="content" value="samplesShow">
+              <label for="other">Students' Responses</label>
+              <input id="other" type="radio" name="content" ng-model="content" value="responsesShow">
+        </form>
+          <div>
+            <div ng-show="content == 'samplesShow'">
+                <table>
+                    <tr>
+                        <th>Sample ID</th>
+                        <th>A</th>
+                        <th>B</th>
+                    </tr>
+                    <tr ng-repeat = 'sample in samples'>
+                        <td>{{sample.sampleID}}</td>
+                        <td>{{sample.A}}</td>
+                        <td>{{sample.B}}</td>
+                    </tr>
+                </table>
+            </div>
+              <div ng-show="content == 'responsesShow'">
+                <form>
+                    <label for="all">All Responses</label>
+                    <input id="all" type="radio" name="table" ng-model="table" value="allRes">
+
+                    <label for="bothC">Both Coke</label>
+                    <input id="bothC" type="radio" name="table" ng-model="table" value="bothC">
+
+                    <label for="bothP">Both Pepsi</label>
+                    <input id="bothP" type="radio" name="table" ng-model="table" value="bothP">
+
+                    <label for="C_P">Coke and Pepsi</label>
+                    <input id="C_P" type="radio" name="table" ng-model="table" value="C_P">
+
+                    <label for="P_C">Pepsi and Coke</label>
+                    <input id="P_C" type="radio" name="table" ng-model="table" value="P_C">
+                </form>
+                <div ng-show = 'table == "allRes"'>
+                	{{mappedRes.length}} Responses in Total </br>
+                	{{sameC.length}} Responses where both were Coke </br>
+                	{{sameP.length}} Responses where both were Pepsi </br>
+                	{{diffC.length}} Responses of Coke and Pepsi </br>
+                	{{diffP.length}} Responses of Pepsi and Coke
+                    <table>
+                        <tr>
+                            <th>Student ID</th>
+                            <th>Assumed Preference</th>
+                            <th>Actual Preference</th>
+                        </tr>
+                        <tr ng-repeat = 'res in mappedRes'>
+                            <td>{{res.studentID}}</td>
+                            <td>{{res.drink1}}</td>
+                            <td>{{res.drink2}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div ng-show = 'table == "bothP"'>
+                	{{sameP.length}} Responses
+                    <table>
+                        <tr>
+                            <th>Student ID</th>
+                            <th>Assumed Preference</th>
+                            <th>Actual Preference</th>
+                        </tr>
+                        <tr ng-repeat = 'res in sameP'>
+                            <td>{{res.studentID}}</td>
+                            <td>{{res.drink1}}</td>
+                            <td>{{res.drink2}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div ng-show = 'table == "bothC"'>
+                	{{sameC.length}} Responses
+                    <table>
+                        <tr>
+                            <th>Student ID</th>
+                            <th>Assumed Preference</th>
+                            <th>Actual Preference</th>
+                        </tr>
+                        <tr ng-repeat = 'res in sameC'>
+                            <td>{{res.studentID}}</td>
+                            <td>{{res.drink1}}</td>
+                            <td>{{res.drink2}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div ng-show = 'table == "P_C"'>
+                    {{diffP.length}} Responses
+                    <table>
+                        <tr>
+                            <th>Student ID</th>
+                            <th>Assumed Preference</th>
+                            <th>Actual Preference</th>
+                        </tr>
+                        <tr ng-repeat = 'res in diffP'>
+                            <td>{{res.studentID}}</td>
+                            <td>{{res.drink1}}</td>
+                            <td>{{res.drink2}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div ng-show = 'table == "C_P"'>
+                    {{diffC.length}} Responses
+                    <table>
+                        <tr>
+                            <th>Student ID</th>
+                            <th>Assumed Preference</th>
+                            <th>Actual Preference</th>
+                        </tr>
+                        <tr ng-repeat = 'res in diffC'>
+                            <td>{{res.studentID}}</td>
+                            <td>{{res.drink1}}</td>
+                            <td>{{res.drink2}}</td>
+                        </tr>
+                    </table>
+                </div>
+              </div>
+        </div>
+    </div>
+</body>
+</html>

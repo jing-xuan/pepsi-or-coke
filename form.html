@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		body{
+			background-color: white;
+		}
+	    input[type = text]{
+			    width: 100%;
+			    padding: 12px 20px;
+			    margin: 12px 0px 30px 0px;
+			    display: inline-block;
+			    border: 1px solid #0040ff;
+			    border-radius: 4px;
+			    box-sizing: border-box;
+					font-size: 35px;
+	    }
+			input[type = number]{
+					width: 100%;
+					padding: 12px 20px;
+					margin: 12px 0px 30px 0px;
+					display: inline-block;
+					border: 1px solid #0040ff;
+					border-radius: 4px;
+					box-sizing: border-box;
+					font-size: 35px;
+			}
+			label{
+				border: 1px solid;
+				font-family: Tahoma;
+				margin-top: 100px;
+				font-size: 35px;
+				padding: 10px;
+				margin-top: 20px;
+			}
+
+			.coke{
+				border-color: red;
+			}
+
+			.pepsi{
+				border-color: blue;
+					margin-left: 25px;
+			}
+
+			.radio2{
+				margin-left: 25px;
+			}
+
+			.label{
+				font-size: 35px;
+				font-family: Tahoma;
+			}
+
+			#form{
+				width: 75%;
+				height: 100%;
+				position: absolute;
+				left: 12.5%;
+				top: 20px;
+			}
+
+			input[type = 'radio']{
+				display: inline;
+				margin: 15px;
+				padding: 5px;
+			}
+
+			#q1{
+				position: absolute;
+				top: 275px;
+			}
+
+			#q2{
+				position: absolute;
+				top: 395px;
+			}
+
+			input[type = 'submit']{
+				font-size: 35px;
+			}
+	</style>
+	<title>
+		Pepsi Or Coke?
+	</title>
+</head>
+<body>
+	<div id = 'form'>
+		<form action = '/submit' method = 'POST'>
+			<span class = 'label'>Student ID:</span><br>
+			<input type = 'text' name = 'studentID' placeholder="h1710000" maxlength = '8' required = 'required'><br>
+			<span class = 'label'>Sample ID:</span><br>
+			<input type = 'number' name = 'sampleID' placeholder = "Sample ID" max = "30" required=""><br>
+			<div id = 'q1'>
+				  <span class = 'label'>Do you Prefer:</span><br><br>
+  		    <label class = 'radio1, coke'><input type = "radio" name = "drink1" value="Coke" required = 'required'>Coke</label>
+          <label class = 'radio2, pepsi'><input type = "radio" name = "drink1" value="Pepsi" required = 'required'>Pepsi</label><br>
+		  </div>
+		  <div id = 'q2'>
+				  <span class = 'label'>Did you prefer:</span><br><br>
+          <label class = 'radio1'><input type = "radio" name = "drink2" value="A" required = 'required'>A</label>
+          <label class = 'radio2'><input type = "radio" name = "drink2" value="B" required = 'required'>B</label><br><br><br>
+					<input type="submit" id = 'submit' value="Submit">
+		  </div>
+		</form>
+	</div>
+</body>
+</html>
